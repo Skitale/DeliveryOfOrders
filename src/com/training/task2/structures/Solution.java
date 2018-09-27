@@ -1,18 +1,20 @@
 package com.training.task2.structures;
 
+import java.util.List;
+
 public class Solution {
-    private Node optimalNode;
+    private List<Integer> optimalPath;
     private int optimalNumViolations;
     private int numPasses;
 
-    public Solution(Node optimalNode, int optimalNumViolations, int numPasses) {
-        this.optimalNode = optimalNode;
+    public Solution(List<Integer> optimalPath, int optimalNumViolations, int numPasses) {
+        this.optimalPath = optimalPath;
         this.optimalNumViolations = optimalNumViolations;
         this.numPasses = numPasses;
     }
 
-    public Node getOptimalNode() {
-        return optimalNode;
+    public List<Integer> getOptimalPath() {
+        return optimalPath;
     }
 
     public int getOptimalNumViolations() {
@@ -22,9 +24,9 @@ public class Solution {
     @Override
     public String toString() {
         return "Solution{" +
-                "optimalNode=" + optimalNode +
+                "optimalPath=" + optimalPath +
                 ", optimalNumViolations=" + optimalNumViolations +
-                ", numPasses=" + numPasses +
+                ", numUsedVertex=" + numPasses +
                 '}';
     }
 }

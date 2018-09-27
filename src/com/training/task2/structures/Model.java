@@ -8,17 +8,28 @@ public class Model {
     private List<Integer> tD;
     private List<List<Integer>> t;
     private boolean validation = false;
+    private String nameModel;
 
     public Model(int n) {
-        if(n <= 0) throw new UnsupportedOperationException();
+        if (n <= 0) throw new UnsupportedOperationException();
+        this.nameModel = "";
         this.n = n;
         tD = new ArrayList<>(n);
         fillListNumber(tD, n, -1);
         t = new ArrayList<>(n + 1);
-        for(int i = 0; i < n + 1; i++){
+        for (int i = 0; i < n + 1; i++) {
             t.add(i, new ArrayList<>(n + 1));
             fillListNumber(t.get(i), n + 1, -1);
         }
+    }
+
+    public Model(String nameModel, int n) {
+        this(n);
+        this.nameModel = nameModel;
+    }
+
+    public String getNameModel() {
+        return nameModel;
     }
 
     public void setTd(int i, int value) {
@@ -36,30 +47,30 @@ public class Model {
         setValidUnknown();
     }
 
-    private void fillListNumber(List<Integer> list, int size, int num){
-        for(int i = 0; i < size; i++){
+    private void fillListNumber(List<Integer> list, int size, int num) {
+        for (int i = 0; i < size; i++) {
             list.add(num);
         }
     }
 
-    private void setValidSuccess(){
+    private void setValidSuccess() {
         validation = true;
     }
 
-    private void setValidUnknown(){
+    private void setValidUnknown() {
         validation = false;
     }
 
-    private void validateTdIndex(int i){
+    private void validateTdIndex(int i) {
         if (i < 0 || i >= n) throw new ArrayIndexOutOfBoundsException();
     }
 
-    private void validateTIndexes(int i, int j){
+    private void validateTIndexes(int i, int j) {
         if (i < 0 || i >= n + 1 || j < 0 || j >= n + 1) throw new ArrayIndexOutOfBoundsException();
     }
 
-    private void validateValueNotNegative(int value){
-        if(value < 0) throw new UnsupportedOperationException();
+    private void validateValueNotNegative(int value) {
+        if (value < 0) throw new UnsupportedOperationException();
     }
 
     public int getN() {
@@ -67,30 +78,30 @@ public class Model {
         return n;
     }
 
-    public int getT(int i, int j){
+    public int getT(int i, int j) {
         if (!isValid()) throw new UnsupportedOperationException();
         validateTIndexes(i, j);
         return t.get(i).get(j);
     }
 
-    public int getTd(int i){
+    public int getTd(int i) {
         i = i - 1;
-        if(!isValid()) throw new UnsupportedOperationException();
+        if (!isValid()) throw new UnsupportedOperationException();
         validateTdIndex(i);
         return tD.get(i);
     }
 
-    public boolean isValid(){
-        if(validation) return true;
-        for(Integer id : tD){
-            if(id.equals(-1)){
+    public boolean isValid() {
+        if (validation) return true;
+        for (Integer id : tD) {
+            if (id.equals(-1)) {
                 return false;
             }
         }
 
-        for(List<Integer> col : t){
-            for(Integer i : col){
-                if(i.equals(-1)){
+        for (List<Integer> col : t) {
+            for (Integer i : col) {
+                if (i.equals(-1)) {
                     return false;
                 }
             }

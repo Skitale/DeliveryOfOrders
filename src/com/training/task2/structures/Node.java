@@ -2,10 +2,12 @@ package com.training.task2.structures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Node {
     private List<Integer> vertex;
+    private List<Integer> upperBoundSolution;
     private int lowerBound = -1;
     private int upperBound = -1;
     private boolean lbFlag = false;
@@ -13,14 +15,17 @@ public class Node {
 
     public Node() {
         vertex = new ArrayList<>();
+        upperBoundSolution = new ArrayList<>();
     }
 
     public Node(Integer... array) {
         vertex = new ArrayList<>(Arrays.asList(array));
+        upperBoundSolution = new ArrayList<>();
     }
 
     public Node(List<Integer> vertex) {
         this.vertex = new ArrayList<>(vertex);
+        upperBoundSolution = new ArrayList<>();
     }
 
     public Node(List<Integer> vertex, Integer... array) {
@@ -30,7 +35,13 @@ public class Node {
 
     public Node(Node vert, Integer... array) {
         vertex = new ArrayList<>(vert.vertex);
+        upperBoundSolution = new ArrayList<>();
         vertex.addAll(Arrays.asList(array));
+    }
+
+    public Node(Node vert, List<Integer> list) {
+        this(vert.vertex);
+        vertex.addAll(list);
     }
 
     public int getLength() {
@@ -53,7 +64,7 @@ public class Node {
     }
 
     public int getLowerBound() {
-        if(!isExistLb()) throw new UnsupportedOperationException();
+        if (!isExistLb()) throw new UnsupportedOperationException();
         return lowerBound;
     }
 
@@ -63,13 +74,23 @@ public class Node {
     }
 
     public int getUpperBound() {
-        if(!isExistUb()) throw new UnsupportedOperationException();
+        if (!isExistUb()) throw new UnsupportedOperationException();
         return upperBound;
     }
 
     public void setUpperBound(int upperBound) {
         ubFlag = true;
         this.upperBound = upperBound;
+    }
+
+    public void setUpperBoundSolution(Node node) {
+        for (int i = 0; i < node.getLength(); i++) {
+            upperBoundSolution.add(node.getVItem(i));
+        }
+    }
+
+    public List<Integer> getUpperBoundSolution() {
+        return upperBoundSolution;
     }
 
     public boolean isExistLb() {
@@ -103,7 +124,9 @@ public class Node {
     @Override
     public String toString() {
         return "Node{" +
-                "vertex=" + vertex.toString() +
+                "vertex=" + vertex +
+                ", lb=" + lowerBound +
+                ", ub=" + upperBound +
                 '}';
     }
 }
