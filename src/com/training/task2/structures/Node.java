@@ -81,6 +81,26 @@ public class Node {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Node node = (Node) o;
+
+        if (lowerBound != node.lowerBound) return false;
+        if (upperBound != node.upperBound) return false;
+        return vertex.equals(node.vertex);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = vertex.hashCode();
+        result = 31 * result + lowerBound;
+        result = 31 * result + upperBound;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Node{" +
                 "vertex=" + vertex.toString() +

@@ -25,7 +25,7 @@ public class Main {
             }
         }*/
 
-        BaseAlgorithm ba = new BaseAlgorithm(models.get(1));
+        BaseAlgorithm ba = new BaseAlgorithm(models.get(2));
         Solution res = ba.solve();
         System.out.println("RES = " + res);
     }
