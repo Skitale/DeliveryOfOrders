@@ -9,7 +9,7 @@ import java.util.*;
 public class UAlgorithm extends BaseAlgorithm {
     public UAlgorithm(Model model) {
         super(model);
-        enableTdComparing = false;
+        enableTdComparing = true;
     }
 
     @Override
@@ -32,6 +32,11 @@ public class UAlgorithm extends BaseAlgorithm {
             }
             result.add(sum);
         }
+
+        if(result.isEmpty()) {
+            result.add(getSolution(node));
+        }
+
         lb = Collections.min(result);
         node.setLowerBound(lb);
         return lb;
@@ -45,17 +50,27 @@ public class UAlgorithm extends BaseAlgorithm {
     @Override
     public Node branching() {
         if (nodeList.isEmpty()) throw new UnsupportedOperationException();
-        Pair<Integer, Node> minH = foundMinUpperBound(nodeList);
-        int maxL = -1;
-        Node nMaxL = minH.getValue();
-        for (int i = 0; i < nodeList.size(); i++) {
-            if (upperBound(nodeList.get(i)) == minH.getKey()) {
-                if (maxL < lowerBound(nodeList.get(i)) && lowerBound(nodeList.get(i)) != upperBound(nodeList.get(i))) {
-                    maxL = lowerBound(nodeList.get(i));
-                    nMaxL = nodeList.get(i);
-                }
+        Node minLB = super.branching();
+        double L = (double)minLB.getLowerBound() * 1.3d;
+        Set<Node> perspective = new HashSet<>();
+
+
+        for(Node node : nodeList){
+            if(node.getLowerBound() <= L){
+                perspective.add(node);
             }
         }
-        return nMaxL;
+
+
+        int min_diff = Integer.MAX_VALUE;
+        Node minNode = minLB;
+        for(Node node : perspective){
+            int diff = node.getUpperBound() - node.getLowerBound();
+            if(diff < min_diff){
+                min_diff = diff;
+                minNode = node;
+            }
+        }
+        return minNode;
     }
 }

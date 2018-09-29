@@ -1,6 +1,5 @@
 package com.training.task2;
 
-import com.training.task2.algorithms.AbstractAlgorithm;
 import com.training.task2.algorithms.impl.BaseAlgorithm;
 import com.training.task2.algorithms.impl.UAlgorithm;
 import com.training.task2.load.Parser;
@@ -16,10 +15,9 @@ public class Main {
         List<Model> models = Parser.parseFolderWithFiles(PATH_TO_FOLDER);
         for (Model m : models) {
             System.out.println("----- Model " + m.getNameModel() + " -----");
-            AbstractAlgorithm ba = new UAlgorithm(m);
-            Solution res = ba.solve();
             Solution baseRes = new BaseAlgorithm(m).solve();
             System.out.println("Base RES = " + baseRes);
+            Solution res = new UAlgorithm(m).solve();
             System.out.println("RES = " + res);
         }
     }

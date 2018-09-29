@@ -64,7 +64,7 @@ public class Node {
     }
 
     public int getLowerBound() {
-        if (!isExistLb()) throw new UnsupportedOperationException();
+        //if (!isExistLb()) throw new UnsupportedOperationException();
         return lowerBound;
     }
 
@@ -74,7 +74,7 @@ public class Node {
     }
 
     public int getUpperBound() {
-        if (!isExistUb()) throw new UnsupportedOperationException();
+        //if (!isExistUb()) throw new UnsupportedOperationException();
         return upperBound;
     }
 
