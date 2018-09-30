@@ -15,9 +15,9 @@ public class Main {
         List<Model> models = Parser.parseFolderWithFiles(PATH_TO_FOLDER);
         for (Model m : models) {
             System.out.println("----- Model " + m.getNameModel() + " -----");
+            Solution res = new UAlgorithm(m).solve();
             Solution baseRes = new BaseAlgorithm(m).solve();
             System.out.println("Base RES = " + baseRes);
-            Solution res = new UAlgorithm(m).solve();
             System.out.println("RES = " + res);
         }
     }

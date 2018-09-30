@@ -37,15 +37,14 @@ public class BaseAlgorithm extends AbstractAlgorithm {
         if (node.isExistUb()) {
             return node.getUpperBound();
         }
-        if (node.getLength() == 0) {
-            return model.getN();
-        }
         int k = node.getLength();
         if (k == model.getN()) {
             node.setUpperBoundSolution(node);
             ub = getSolution(node);
             node.setUpperBound(ub);
             return ub;
+        } else if(k == 0){
+            return Integer.MAX_VALUE;
         }
         int j = 0;
         Node tmpNode = new Node(node);
@@ -69,14 +68,14 @@ public class BaseAlgorithm extends AbstractAlgorithm {
                     res = td - r;
                     mapResultTimes.put(curStation, model.getT(lastStation, curStation));
                 } else {
-                    res = Integer.MAX_VALUE - 1;
+                    res = Integer.MAX_VALUE;
                     mapResultTimes.put(curStation, Integer.MAX_VALUE);
                 }
                 mapResult.put(curStation, res);
             }
             int num = 0;
             for (Integer item : mapResult.values()) {
-                if (item.equals(Integer.MAX_VALUE - 1)) {
+                if (item.equals(Integer.MAX_VALUE)) {
                     num++;
                 }
             }

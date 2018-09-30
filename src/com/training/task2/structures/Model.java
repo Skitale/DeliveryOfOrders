@@ -11,7 +11,7 @@ public class Model {
     private String nameModel;
 
     public Model(int n) {
-        if (n <= 0) throw new UnsupportedOperationException();
+        if (n <= 0) throw new UnsupportedOperationException("The model has zero size");
         this.nameModel = "";
         this.n = n;
         tD = new ArrayList<>(n);

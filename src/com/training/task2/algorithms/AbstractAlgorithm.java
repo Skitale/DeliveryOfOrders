@@ -10,12 +10,18 @@ import java.util.*;
 public abstract class AbstractAlgorithm implements IAlgorithm {
     protected List<Node> nodeList;
     protected Model model;
+    private Node minNode;
     private int iter = 0;
 
     public AbstractAlgorithm(Model model) {
         this.model = model;
         nodeList = new ArrayList<>();
-        nodeList.add(new Node());
+        Node rootNode = new Node();
+        rootNode.setUpperBound(Integer.MAX_VALUE);
+        rootNode.setLowerBound(Integer.MAX_VALUE - 1);
+        nodeList.add(rootNode);
+        minNode = new Node();
+        minNode.setUpperBound(Integer.MAX_VALUE);
     }
 
     @Override
@@ -23,18 +29,21 @@ public abstract class AbstractAlgorithm implements IAlgorithm {
         while (true) {
             Node root = branching();
             addUnionToList(nodeList, root);
-            Pair<Integer, Node> currentUpperMin = foundMinUpperBound(nodeList);
+            Pair<Integer, Node> currentUpperMin = foundMinUpperBound(nodeList, true);
             int min = currentUpperMin.getKey();
             removingNodes(nodeList, min);
             if (nodeList.isEmpty()) {
-                return new Solution(currentUpperMin.getValue().getUpperBoundSolution(), min, iter);
+                return new Solution(minNode.getUpperBoundSolution(), minNode.getUpperBound(), iter);
             }
             if (nodeList.size() == 1) {
                 Node oneNode = nodeList.get(0);
                 int uBound = upperBound(oneNode);
                 int lBound = lowerBound(oneNode);
                 if (uBound == lBound) {
-                    return new Solution(oneNode.getUpperBoundSolution(), uBound, iter);
+                    if(minNode.getUpperBound() != minNode.getLowerBound() || minNode.getLowerBound() >= uBound){
+                       minNode = oneNode;
+                    }
+                    return new Solution(minNode.getUpperBoundSolution(), minNode.getUpperBound(), iter);
                 }
             }
         }
@@ -104,16 +113,19 @@ public abstract class AbstractAlgorithm implements IAlgorithm {
         return numViolations;
     }
 
-    protected Pair<Integer, Node> foundMinUpperBound(List<Node> nodes) {
+    protected Pair<Integer, Node> foundMinUpperBound(List<Node> nodes, boolean saveMin) {
         if (nodes.isEmpty()) throw new UnsupportedOperationException();
         int min = Integer.MAX_VALUE;
         Node sol = null;
         for (Node n : nodes) {
             int currentUBound = upperBound(n);
-            if (currentUBound < min) {
+            if (currentUBound <= min) {
                 min = currentUBound;
                 sol = n;
             }
+        }
+        if(saveMin && minNode.getUpperBound() > min){
+            minNode = sol;
         }
         return new Pair<>(min, sol);
     }

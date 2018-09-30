@@ -9,7 +9,7 @@ import java.util.*;
 public class UAlgorithm extends BaseAlgorithm {
     public UAlgorithm(Model model) {
         super(model);
-        enableTdComparing = true;
+        enableTdComparing = false;
     }
 
     @Override
