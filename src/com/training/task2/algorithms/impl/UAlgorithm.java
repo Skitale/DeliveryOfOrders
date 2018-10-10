@@ -9,7 +9,7 @@ import java.util.*;
 public class UAlgorithm extends BaseAlgorithm {
     public UAlgorithm(Model model) {
         super(model);
-        enableTdComparing = false;
+        enableTdComparing = true;
     }
 
     @Override
@@ -19,25 +19,23 @@ public class UAlgorithm extends BaseAlgorithm {
             return node.getLowerBound();
         }
         List<Integer> negVertex = negativeVertexForNode(node);
-        List<Integer> result = new ArrayList<>();
         List<Node> oneDeepNodes = new ArrayList<>();
         for (Integer i : negVertex) {
             oneDeepNodes.add(new Node(node, i));
         }
 
+        List<Integer> result = new ArrayList<>();
         for (Node n : oneDeepNodes) {
-            int sum = 0;
             for (Integer i : negativeVertexForNode(n)) {
-                sum += getSolution(new Node(n, i));
+                result.add(getSolution(new Node(n, i)));
             }
-            result.add(sum);
         }
 
         if(result.isEmpty()) {
             result.add(getSolution(node));
         }
 
-        lb = Collections.min(result);
+        lb = Collections.max(result);
         node.setLowerBound(lb);
         return lb;
     }
@@ -50,20 +48,20 @@ public class UAlgorithm extends BaseAlgorithm {
     @Override
     public Node branching() {
         if (nodeList.isEmpty()) throw new UnsupportedOperationException();
-        Node minLB = super.branching();
-        double L = (double)minLB.getLowerBound() * 1.3d;
+        Pair<Integer, Node> minUpperBound = foundMinUpperBound(nodeList, false);
+        double L = (double)minUpperBound.getKey() * 1.5d;
         Set<Node> perspective = new HashSet<>();
 
 
         for(Node node : nodeList){
-            if(node.getLowerBound() <= L){
+            if(node.getUpperBound() <= L){
                 perspective.add(node);
             }
         }
 
 
         int min_diff = Integer.MAX_VALUE;
-        Node minNode = minLB;
+        Node minNode = minUpperBound.getValue();
         for(Node node : perspective){
             int diff = node.getUpperBound() - node.getLowerBound();
             if(diff < min_diff){

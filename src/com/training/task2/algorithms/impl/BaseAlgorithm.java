@@ -24,9 +24,11 @@ public class BaseAlgorithm extends AbstractAlgorithm {
         for (Integer i : negVertex) {
             oneDeepNodes.add(new Node(node, i));
         }
+        List<Integer> lbsForNewNodes = new ArrayList<>();
         for (Node n : oneDeepNodes) {
-            lb += getSolution(n);
+            lbsForNewNodes.add(getSolution(n));
         }
+        lb = Collections.max(lbsForNewNodes);
         node.setLowerBound(lb);
         return lb;
     }
@@ -57,7 +59,7 @@ public class BaseAlgorithm extends AbstractAlgorithm {
                 time += model.getT(sourceStationNumber, distStationNumber);
             }
             List<Integer> negVertex = negativeVertexForNode(tmpNode);
-            Map<Integer, Integer> mapResult = new HashMap<>();
+            Map<Integer, Integer> mapResultResolvingTd = new HashMap<>();
             Map<Integer, Integer> mapResultTimes = new HashMap<>();
             for (Integer curStation : negVertex) {
                 int res = -1;
@@ -71,10 +73,10 @@ public class BaseAlgorithm extends AbstractAlgorithm {
                     res = Integer.MAX_VALUE;
                     mapResultTimes.put(curStation, Integer.MAX_VALUE);
                 }
-                mapResult.put(curStation, res);
+                mapResultResolvingTd.put(curStation, res);
             }
             int num = 0;
-            for (Integer item : mapResult.values()) {
+            for (Integer item : mapResultResolvingTd.values()) {
                 if (item.equals(Integer.MAX_VALUE)) {
                     num++;
                 }
@@ -83,14 +85,14 @@ public class BaseAlgorithm extends AbstractAlgorithm {
             if (num == negVertex.size()) {
                 ub = num + getSolution(tmpNode);
                 Node tNode = new Node(tmpNode, negativeVertexForNode(tmpNode));
-                assert ub == getSolution(tNode);
+                //assert ub == getSolution(tNode);
                 node.setUpperBoundSolution(tNode);
                 node.setUpperBound(ub);
                 return ub;
             }
             int numMinStation;
             if(enableTdComparing) {
-                numMinStation = getNumMinStation(mapResult);
+                numMinStation = getNumMinStation(mapResultResolvingTd);
             } else {
                 numMinStation = getNumMinStation(mapResultTimes);
             }

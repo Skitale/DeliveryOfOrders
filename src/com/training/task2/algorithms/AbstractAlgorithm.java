@@ -40,10 +40,7 @@ public abstract class AbstractAlgorithm implements IAlgorithm {
                 int uBound = upperBound(oneNode);
                 int lBound = lowerBound(oneNode);
                 if (uBound == lBound) {
-                    if(minNode.getUpperBound() != minNode.getLowerBound() || minNode.getLowerBound() >= uBound){
-                       minNode = oneNode;
-                    }
-                    return new Solution(minNode.getUpperBoundSolution(), minNode.getUpperBound(), iter);
+                    return new Solution(oneNode.getUpperBoundSolution(), oneNode.getUpperBound(), iter);
                 }
             }
         }
